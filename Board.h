@@ -37,7 +37,7 @@ struct Board_Hash {
     }
 
     void add_piece(uint32_t index, Piece piece) {
-        hash |= (piece & 3) << (index * 2); // One piece takes two bits, so shift by twice the index
+        hash |= (piece & 3ull) << (index * 2); // One piece takes two bits, so shift by twice the index
     }
 
     void remove_piece(uint32_t index) {
