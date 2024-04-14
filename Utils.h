@@ -2,6 +2,7 @@
 
 using Piece = int8_t;
 using Hash_Type = uint64_t;
+using Cost = int32_t;
 
 constexpr Piece NON = 0, NIL = 1, ONE = 2, TWO = 3; // Offset by one so that 0 corresponds to an empty square
 
