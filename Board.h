@@ -55,9 +55,10 @@ class Board {
     Translation translation;
     Board_Hash hash;
     MoveGenerator move_gen;
+    uint32_t size;
 
 public:
-    Board(Position& pos, uint32_t size) : position(pos), translation(size), move_gen(position) {
+    Board(Position& pos, uint32_t size) : position(pos), translation(size), move_gen(position), size(size) {
         assert(position.squares.size() == size);
 
         for (uint32_t row = 0; row < size; ++row) {
@@ -97,5 +98,22 @@ public:
 
     auto generate_moves() {
         return move_gen.generate_moves();
+    }
+
+    void print() {
+        for (uint32_t row = 0; row < size; ++row) {
+            for (uint32_t file = 0; file < size; ++file) {
+                Square square{row, file};
+                Piece piece = position.get_piece(square);
+                if (piece > NON) {
+                    std::cout << piece - 1;
+                } else {
+                    std::cout << "-";
+                }
+                std::cout << " ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
     }
 };
