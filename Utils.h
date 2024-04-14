@@ -21,7 +21,7 @@ struct Move {
 struct Position {
     std::vector<std::vector<Piece>> squares;
 
-    Piece get_piece(Square square) {
+    [[nodiscard]] Piece get_piece(Square square) const {
         return squares[square.row][square.file];
     }
 

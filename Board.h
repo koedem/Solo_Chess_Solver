@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "Utils.h"
+#include "MoveGenerator.h"
 
 struct Translation {
     std::vector<uint32_t > square_to_index;
@@ -53,9 +54,10 @@ class Board {
     Position position;
     Translation translation;
     Board_Hash hash;
+    MoveGenerator move_gen;
 
 public:
-    Board(Position pos, uint32_t size) : position(std::move(pos)), translation(size) {
+    Board(Position pos, uint32_t size) : position(std::move(pos)), translation(size), move_gen(position) {
         assert(position.squares.size() == size);
 
         for (uint32_t row = 0; row < size; ++row) {
@@ -93,5 +95,9 @@ public:
         Piece previous = move.destination.piece;
         position.set_square(destination, previous);
         hash.modify_piece(translation.square_to_number(destination), previous);
+    }
+
+    auto generate_moves() {
+        return move_gen.generate_moves();
     }
 };
