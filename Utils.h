@@ -18,8 +18,8 @@ struct Move {
     Placed_Piece origin, destination;
 
     void print() const {
-        std::cout << origin.piece - 1 << ":" << origin.square.row << "-" << origin.square.file << " --> ";
-        std::cout << destination.piece - 1 << ":" << destination.square.row << "-" << destination.square.file;
+        std::cout << origin.square.row << "-" << origin.square.file << " (" << origin.piece - 1 << ") --> ";
+        std::cout << destination.square.row << "-" << destination.square.file << " (" << destination.piece - 1 << ")";
     }
 };
 
