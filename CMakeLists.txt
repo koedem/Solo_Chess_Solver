@@ -6,4 +6,5 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(Solo_Chess_Solver main.cpp
         Board.h
         MoveGenerator.h
-        Utils.h)
+        Utils.h
+        DFS.h)
