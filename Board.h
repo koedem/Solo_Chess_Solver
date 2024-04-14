@@ -10,11 +10,15 @@ using Hash_Type = uint64_t;
 
 constexpr Piece NIL = 0, ONE = 1, TWO = 2, NON = -1;
 
+struct Square {
+    uint32_t row, file;
+};
+
 struct Position {
     std::vector<std::vector<Piece>> squares;
 
-    Piece get_piece(uint32_t row, uint32_t file) {
-        return squares[row][file];
+    Piece get_piece(Square square) {
+        return squares[square.row][square.file];
     }
 
     explicit Position(std::vector<std::vector<Piece>> configuration) :
@@ -26,16 +30,16 @@ struct Translation {
     const uint32_t size;
     uint32_t number_of_indices = 0;
 
-    [[nodiscard]] uint32_t two_d_to_one_d(uint32_t row, uint32_t file) const {
-        return row * size + file;
+    [[nodiscard]] uint32_t square_to_number(Square square) const {
+        return square.row * size + square.file;
     }
 
-    uint32_t get_index(uint32_t row, uint32_t file) {
-        return square_to_index[two_d_to_one_d(row, file)];
+    uint32_t get_index(Square square) {
+        return square_to_index[square_to_number(square)];
     }
 
-    uint32_t append_index(uint32_t row, uint32_t file) {
-        square_to_index[two_d_to_one_d(row, file)] = number_of_indices;
+    uint32_t append_index(Square square) {
+        square_to_index[square_to_number(square)] = number_of_indices;
         return number_of_indices++;
     }
 
@@ -74,9 +78,10 @@ public:
 
         for (uint32_t row = 0; row < size; ++row) {
             for (uint32_t file = 0; file < size; ++file) {
-                Piece piece = position.get_piece(row, file);
+                Square square{row, file};
+                Piece piece = position.get_piece(square);
                 if (piece != NON) {
-                    hash.add_piece(translation.append_index(row, file), piece);
+                    hash.add_piece(translation.append_index(square), piece);
                 }
             }
         }
