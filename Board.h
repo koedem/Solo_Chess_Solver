@@ -8,7 +8,7 @@
 #include "Utils.h"
 #include "MoveGenerator.h"
 
-struct Translation {
+class Translation {
     std::vector<uint32_t > square_to_index;
     const uint32_t size;
     uint32_t number_of_indices = 0;
@@ -17,6 +17,7 @@ struct Translation {
         return square.row * size + square.file;
     }
 
+public:
     uint32_t get_index(Square square) {
         return square_to_index[square_to_number(square)];
     }
@@ -75,25 +76,25 @@ public:
     void make_move(Move move) {
         Square origin = move.origin.square;
         position.set_square(origin, NON);
-        hash.remove_piece(translation.square_to_number(origin));
+        hash.remove_piece(translation.get_index(origin));
 
         Square destination = move.destination.square;
         Piece result = move.origin.piece  - 1; // Moving uses up one capture
         assert(result >= NIL); // Otherwise this piece had no captures left
         position.set_square(destination, result);
-        hash.modify_piece(translation.square_to_number(destination), result);
+        hash.modify_piece(translation.get_index(destination), result);
     }
 
     void unmake_move(Move move) {
         Square origin = move.origin.square;
         Piece original = move.origin.piece; // Reinstate the original capture count
         position.set_square(origin, original);
-        hash.add_piece(translation.square_to_number(origin), original);
+        hash.add_piece(translation.get_index(origin), original);
 
         Square destination = move.destination.square;
         Piece previous = move.destination.piece;
         position.set_square(destination, previous);
-        hash.modify_piece(translation.square_to_number(destination), previous);
+        hash.modify_piece(translation.get_index(destination), previous);
     }
 
     auto generate_moves() {
