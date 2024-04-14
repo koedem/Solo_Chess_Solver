@@ -5,38 +5,7 @@
 #include <vector>
 #include <cassert>
 
-using Piece = int8_t;
-using Hash_Type = uint64_t;
-
-constexpr Piece NON = 0, NIL = 1, ONE = 2, TWO = 3; // Offset by one so that 0 corresponds to an empty square
-
-struct Square {
-    uint32_t row, file;
-};
-
-struct Placed_Piece {
-    Square square;
-    Piece piece;
-};
-
-struct Move {
-    Placed_Piece origin, destination;
-};
-
-struct Position {
-    std::vector<std::vector<Piece>> squares;
-
-    Piece get_piece(Square square) {
-        return squares[square.row][square.file];
-    }
-
-    void set_square(Square square, Piece piece) {
-        squares[square.row][square.file] = piece;
-    }
-
-    explicit Position(std::vector<std::vector<Piece>> configuration) :
-                        squares(std::move(configuration)) {};
-};
+#include "Utils.h"
 
 struct Translation {
     std::vector<uint32_t > square_to_index;
@@ -109,6 +78,7 @@ public:
 
         Square destination = move.destination.square;
         Piece result = move.origin.piece  - 1; // Moving uses up one capture
+        assert(result >= NIL); // Otherwise this piece had no captures left
         position.set_square(destination, result);
         hash.modify_piece(translation.square_to_number(destination), result);
     }
