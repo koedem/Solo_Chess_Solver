@@ -32,7 +32,7 @@ struct Translation {
 struct Board_Hash {
     Hash_Type hash = 0;
 
-    Hash_Type get_hash() {
+    [[nodiscard]] Hash_Type get_hash() const {
         return hash;
     }
 
@@ -41,7 +41,7 @@ struct Board_Hash {
     }
 
     void remove_piece(uint32_t index) {
-        hash &= ~(3ull << index);
+        hash &= ~(3ull << (index * 2));
     }
 
     void modify_piece(uint32_t index, Piece piece) {
@@ -119,5 +119,23 @@ public:
 
     Hash_Type get_hash() {
         return hash.get_hash();
+    }
+
+    /**
+     * Counts the number of remaining pieces outside the first row and file
+     * @return
+     */
+    Cost cost() {
+        Cost cost = 0;
+        for (uint32_t row = 1; row < size; ++row) {
+            for (uint32_t file = 1; file < size; ++file) {
+                Square square{row, file};
+                Piece piece = position.get_piece(square);
+                if (piece > NON) {
+                    ++cost;
+                }
+            }
+        }
+        return cost;
     }
 };
