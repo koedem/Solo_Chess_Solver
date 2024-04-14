@@ -14,7 +14,7 @@ int main() {
             { NON, TWO, NON, NON, NON, NON, NON, NON, NON, NON },
             { NON, TWO, TWO, NON, NON, NON, NON, NON, NON, NON },
             { NON, NON, TWO, NON, NON, NON, NON, NON, NON, NON },
-            { NON, NON, NON, NON, NON, NON, NON, NON, NON, NON }
+            { TWO, TWO, NON, NON, NON, TWO, NON, NON, NON, NON }
     };
     Position position(example);
     Board board(position, size);

@@ -19,7 +19,13 @@ class DFS {
         auto moves = board.generate_moves();
         for (auto move : moves) {
             board.make_move(move);
-            dfs();
+
+            auto hash = board.get_hash();
+            if (!expanded_positions.contains(hash)) {
+                dfs();
+                expanded_positions.emplace(hash, Entry{});
+            }
+
             board.unmake_move(move);
         }
     }

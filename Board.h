@@ -116,4 +116,8 @@ public:
         }
         std::cout << std::endl;
     }
+
+    Hash_Type get_hash() {
+        return hash.get_hash();
+    }
 };
