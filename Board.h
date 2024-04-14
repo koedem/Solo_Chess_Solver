@@ -51,13 +51,13 @@ struct Board_Hash {
 };
 
 class Board {
-    Position position;
+    Position& position;
     Translation translation;
     Board_Hash hash;
     MoveGenerator move_gen;
 
 public:
-    Board(Position pos, uint32_t size) : position(std::move(pos)), translation(size), move_gen(position) {
+    Board(Position& pos, uint32_t size) : position(pos), translation(size), move_gen(position) {
         assert(position.squares.size() == size);
 
         for (uint32_t row = 0; row < size; ++row) {
