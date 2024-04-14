@@ -8,6 +8,10 @@ constexpr Piece NON = 0, NIL = 1, ONE = 2, TWO = 3; // Offset by one so that 0 c
 
 struct Square {
     uint32_t row, file;
+
+    bool operator==(const Square& other) const {
+        return row == other.row && file == other.file;
+    }
 };
 
 struct Placed_Piece {
