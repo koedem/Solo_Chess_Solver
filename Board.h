@@ -8,10 +8,19 @@
 using Piece = int8_t;
 using Hash_Type = uint64_t;
 
-constexpr Piece NIL = 0, ONE = 1, TWO = 2, NON = -1;
+constexpr Piece NON = 0, NIL = 1, ONE = 2, TWO = 3; // Offset by one so that 0 corresponds to an empty square
 
 struct Square {
     uint32_t row, file;
+};
+
+struct Placed_Piece {
+    Square square;
+    Piece piece;
+};
+
+struct Move {
+    Placed_Piece origin, destination;
 };
 
 struct Position {
@@ -19,6 +28,10 @@ struct Position {
 
     Piece get_piece(Square square) {
         return squares[square.row][square.file];
+    }
+
+    void set_square(Square square, Piece piece) {
+        squares[square.row][square.file] = piece;
     }
 
     explicit Position(std::vector<std::vector<Piece>> configuration) :
@@ -54,7 +67,7 @@ struct Board_Hash {
     }
 
     void add_piece(uint32_t index, Piece piece) {
-        hash |= (piece & 3) << index;
+        hash |= (piece & 3) << (index * 2); // One piece takes two bits, so shift by twice the index
     }
 
     void remove_piece(uint32_t index) {
@@ -88,4 +101,27 @@ public:
 
         std::cout << hash.get_hash() << std::endl;
     };
+
+    void make_move(Move move) {
+        Square origin = move.origin.square;
+        position.set_square(origin, NON);
+        hash.remove_piece(translation.square_to_number(origin));
+
+        Square destination = move.destination.square;
+        Piece result = move.origin.piece  - 1; // Moving uses up one capture
+        position.set_square(destination, result);
+        hash.modify_piece(translation.square_to_number(destination), result);
+    }
+
+    void unmake_move(Move move) {
+        Square origin = move.origin.square;
+        Piece original = move.origin.piece; // Reinstate the original capture count
+        position.set_square(origin, original);
+        hash.add_piece(translation.square_to_number(origin), original);
+
+        Square destination = move.destination.square;
+        Piece previous = move.destination.piece;
+        position.set_square(destination, previous);
+        hash.modify_piece(translation.square_to_number(destination), previous);
+    }
 };
