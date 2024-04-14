@@ -9,7 +9,7 @@ class MoveGenerator {
     const uint32_t size = position.squares.size();
 
     void generate_moves(std::vector<Move>& moves, Square square) {
-        Placed_Piece us(square, position.get_piece(square));
+        Placed_Piece us{square, position.get_piece(square)};
         uint32_t row = square.row;
         while (row > 0) {
             --row;
@@ -17,7 +17,7 @@ class MoveGenerator {
             Piece adjacent_piece = position.get_piece(adjacent);
 
             if (adjacent_piece >= NIL) { // At least a 0 rook, i.e. non-empty
-                Move move(us, {adjacent, adjacent_piece});
+                Move move{us, {adjacent, adjacent_piece}};
                 moves.emplace_back(move);
                 break;
             }
@@ -29,7 +29,7 @@ class MoveGenerator {
             Piece adjacent_piece = position.get_piece(adjacent);
 
             if (adjacent_piece >= NIL) { // At least a 0 rook, i.e. non-empty
-                Move move(us, {adjacent, adjacent_piece});
+                Move move{us, {adjacent, adjacent_piece}};
                 moves.emplace_back(move);
                 break;
             }
@@ -44,7 +44,7 @@ class MoveGenerator {
             Piece adjacent_piece = position.get_piece(adjacent);
 
             if (adjacent_piece >= NIL) { // At least a 0 rook, i.e. non-empty
-                Move move(us, {adjacent, adjacent_piece});
+                Move move{us, {adjacent, adjacent_piece}};
                 moves.emplace_back(move);
                 break;
             }
@@ -56,7 +56,7 @@ class MoveGenerator {
             Piece adjacent_piece = position.get_piece(adjacent);
 
             if (adjacent_piece >= NIL) { // At least a 0 rook, i.e. non-empty
-                Move move(us, {adjacent, adjacent_piece});
+                Move move{us, {adjacent, adjacent_piece}};
                 moves.emplace_back(move);
                 break;
             }

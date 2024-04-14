@@ -69,8 +69,6 @@ public:
                 }
             }
         }
-
-        std::cout << hash.get_hash() << std::endl;
     };
 
     void make_move(Move move) {
