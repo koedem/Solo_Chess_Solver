@@ -3,7 +3,7 @@
 
 int main() {
     int size = 2;
-    std::vector<std::vector<Piece >> example = { { 2, 0 }, { 0, 1 } };
+    std::vector<std::vector<Piece >> example = { { ONE, NON }, { TWO, NIL } };
     Position position(example);
     Board board(position, size);
 
