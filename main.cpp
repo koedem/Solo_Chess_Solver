@@ -55,7 +55,7 @@ int main() {
     };
 
     size = 11;
-    std::vector<std::vector<Piece >> example = {
+    std::vector<std::vector<Piece >> and_gate = {
             { NON, NON, NON, NIL, NIL, NON, NON, NON, NON, NON, NON },
             { NON, NON, NON, NON, NON, NON, NON, NON, NON, TWO, NON },
             { NON, NON, NON, NON, NIL, NON, TWO, NON, NON, TWO, NON },
@@ -67,6 +67,22 @@ int main() {
             { NON, NON, NON, NON, NON, NON, NON, NON, TWO, NON, NON },
             { TWO, NON, NON, NON, NON, TWO, TWO, NON, NON, NON, TWO },
             { NON, NON, NON, NON, NON, NON, NON, NON, NON, NON, TWO }
+    };
+
+    size = 12;
+    std::vector<std::vector<Piece >> example = {
+            { NON, NON, NON, NIL, NON, NIL, NON, NON, NON, NON, NON, NON },
+            { NON, NON, NON, NON, NON, NON, NON, NON, NON, NON, TWO, NON },
+            { NON, NON, NON, NON, TWO, NON, NON, NON, NON, NON, NON, NON },
+            { NON, NON, NON, NON, TWO, TWO, NON, TWO, NON, NON, TWO, NON },
+            { NON, NON, NON, NIL, NON, TWO, NON, TWO, NON, NON, NON, NON },
+            { NON, NON, NON, NON, NON, NON, NON, NON, NON, NON, NON, NON },
+            { NON, TWO, NON, NON, NON, NON, NON, TWO, TWO, NON, NON, NON },
+            { NON, NON, NON, NON, NON, NON, NON, NON, TWO, NON, NON, NON },
+            { NON, NON, TWO, NON, NON, NON, NON, TWO, NON, TWO, NON, NON },
+            { NON, NON, NON, NON, NON, NON, NON, NON, NON, TWO, NON, NON },
+            { TWO, NON, NON, NON, NON, NON, TWO, TWO, NON, NON, NON, TWO },
+            { NON, NON, NON, NON, NON, NON, NON, NON, NON, NON, NON, TWO }
     };
 
     Position position(example);
