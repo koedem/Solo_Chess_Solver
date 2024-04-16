@@ -4,6 +4,7 @@
 #include <iostream>
 #include <utility>
 #include "Board.h"
+#include "absl/container/flat_hash_map.h"
 
 struct Entry {
     Cost cost;
@@ -11,7 +12,7 @@ struct Entry {
 
 class DFS {
     Board board;
-    std::unordered_map<Hash_Type, Entry> expanded_positions;
+    absl::flat_hash_map<Hash_Type, Entry> expanded_positions;
     uint32_t counter = 0;
     std::vector<Move> pv;
 
