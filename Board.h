@@ -97,7 +97,7 @@ public:
         hash.modify_piece(translation.get_index(destination), previous);
     }
 
-    auto generate_moves() {
+    [[nodiscard]] auto generate_moves() const {
         return move_gen.generate_moves();
     }
 

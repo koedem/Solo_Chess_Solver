@@ -8,7 +8,7 @@ class MoveGenerator {
     const Position& position;
     const uint32_t size = position.squares.size();
 
-    void generate_moves(std::vector<Move>& moves, Square square) {
+    void generate_moves(std::vector<Move>& moves, Square square) const {
         Placed_Piece us{square, position.get_piece(square)};
         uint32_t row = square.row;
         while (row > 0) {
@@ -66,7 +66,7 @@ class MoveGenerator {
 
 public:
 
-    std::vector<Move> generate_moves() {
+    [[nodiscard]] std::vector<Move> generate_moves() const {
         std::vector<Move> moves;
         for (uint32_t row = 0; row < position.squares.size(); ++row) {
             for (uint32_t file = 0; file < position.squares.size(); ++file) {

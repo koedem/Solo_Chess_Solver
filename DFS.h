@@ -34,9 +34,6 @@ class DFS {
                 auto entry = expanded_positions.at(hash);
                 inner_value = entry.cost;
             }
-            if (hash != board.get_hash()) {
-                int a = 0;
-            }
 
             if (inner_value < value) { // If we can reduce the value by this move, update the value
                 value = inner_value;
