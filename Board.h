@@ -133,7 +133,11 @@ public:
                 Square square{row, file};
                 Piece piece = position.get_piece(square);
                 if (piece > NON) {
-                    ++cost;
+                    if (file == size - 1) {
+                        ++cost;
+                    } else {
+                        cost += 10; // avoid nonsense solutions and make sure clauses get cleared and only the output may be left 0
+                    }
                 }
             }
         }
