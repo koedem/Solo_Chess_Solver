@@ -1,18 +1,13 @@
 #pragma once
 
-#include <unordered_map>
 #include <iostream>
 #include <utility>
 #include "Board.h"
-#include "absl/container/flat_hash_map.h"
-
-struct Entry {
-    Cost cost;
-};
+#include "Hashtable.h"
 
 class DFS {
     Board board;
-    absl::flat_hash_map<Hash_Type, Entry> expanded_positions;
+    Hashtable expanded_positions;
     uint32_t counter = 0;
     std::vector<Move> pv;
 
@@ -20,20 +15,20 @@ class DFS {
 
     Cost dfs(int depth) {
         Cost value = board.cost();
-        ++counter;
         auto moves = board.generate_moves();
         for (auto move : moves) {
+            ++counter;
             board.make_move(move);
             pv[depth] = move;
 
             Cost inner_value;
             auto hash = board.get_hash();
-            if (!expanded_positions.contains(hash)) {
+            int16_t cost = expanded_positions.get(hash);
+            if (cost == -1) { // not expanded yet
                 inner_value = dfs(depth + 1);
-                expanded_positions.emplace(hash, Entry{inner_value});
+                expanded_positions.put(hash, inner_value);
             } else {
-                auto entry = expanded_positions.at(hash);
-                inner_value = entry.cost;
+                inner_value = cost;
             }
 
             if (inner_value < value) { // If we can reduce the value by this move, update the value
