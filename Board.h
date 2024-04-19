@@ -58,6 +58,41 @@ class Board {
     MoveGenerator move_gen;
     uint32_t size;
 
+    Cost current_cost = 0;
+
+    /**
+     * Counts the number of remaining pieces outside the first row and file
+     * @return
+     */
+    Cost calculate_cost() {
+        Cost cost = 0;
+        for (uint32_t row = 1; row < size; ++row) {
+            for (uint32_t file = 1; file < size; ++file) {
+                Square square{row, file};
+                Piece piece = position.get_piece(square);
+                if (piece > NON) {
+                    if (file == size - 1) {
+                        ++cost;
+                    } else {
+                        cost += 10; // avoid nonsense solutions and make sure clauses get cleared and only the output may be left 0
+                    }
+                }
+            }
+        }
+        return cost;
+    }
+
+    Cost cost_change(Move& move) {
+        Cost cost = 0;
+        if (move.origin.square.row > 0 && move.origin.square.file > 0) {
+            cost = -1;
+            if (move.origin.square.file != size - 1) {
+                cost = -10;
+            }
+        }
+        return cost;
+    }
+
 public:
     Board(Position& pos, uint32_t size) : position(pos), translation(size), move_gen(position), size(size) {
         assert(position.squares.size() == size);
@@ -71,6 +106,7 @@ public:
                 }
             }
         }
+        current_cost = calculate_cost();
     };
 
     void make_move(Move move) {
@@ -83,6 +119,8 @@ public:
         assert(result >= NIL); // Otherwise this piece had no captures left
         position.set_square(destination, result);
         hash.modify_piece(translation.get_index(destination), result);
+
+        current_cost += cost_change(move);
     }
 
     void unmake_move(Move move) {
@@ -95,6 +133,8 @@ public:
         Piece previous = move.destination.piece;
         position.set_square(destination, previous);
         hash.modify_piece(translation.get_index(destination), previous);
+
+        current_cost -= cost_change(move);
     }
 
     [[nodiscard]] auto generate_moves() const {
@@ -126,21 +166,8 @@ public:
      * Counts the number of remaining pieces outside the first row and file
      * @return
      */
-    Cost cost() {
-        Cost cost = 0;
-        for (uint32_t row = 1; row < size; ++row) {
-            for (uint32_t file = 1; file < size; ++file) {
-                Square square{row, file};
-                Piece piece = position.get_piece(square);
-                if (piece > NON) {
-                    if (file == size - 1) {
-                        ++cost;
-                    } else {
-                        cost += 10; // avoid nonsense solutions and make sure clauses get cleared and only the output may be left 0
-                    }
-                }
-            }
-        }
-        return cost;
+    [[nodiscard]] Cost cost() const {
+        assert(current_cost == calculate_cost());
+        return current_cost;
     }
 };
