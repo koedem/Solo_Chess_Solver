@@ -8,26 +8,22 @@
 #include "Utils.h"
 #include "MoveGenerator.h"
 
+template<uint32_t BOARD_SIZE>
 class Translation {
     std::vector<uint32_t > square_to_index;
-    const uint32_t size;
     uint32_t number_of_indices = 0;
-
-    [[nodiscard]] uint32_t square_to_number(Square square) const {
-        return square.row * size + square.file;
-    }
 
 public:
     uint32_t get_index(Square square) {
-        return square_to_index[square_to_number(square)];
+        return square_to_index[square_to_number<BOARD_SIZE>(square)];
     }
 
     uint32_t append_index(Square square) {
-        square_to_index[square_to_number(square)] = number_of_indices;
+        square_to_index[square_to_number<BOARD_SIZE>(square)] = number_of_indices;
         return number_of_indices++;
     }
 
-    explicit Translation(uint32_t size) : size(size), square_to_index(size * size) {};
+    explicit Translation(uint32_t size) : square_to_index(size * size) {};
 };
 
 struct Board_Hash {
@@ -51,12 +47,12 @@ struct Board_Hash {
     }
 };
 
+template<uint32_t BOARD_SIZE>
 class Board {
-    Position& position;
-    Translation translation;
+    Position<BOARD_SIZE>& position;
+    Translation<BOARD_SIZE> translation;
     Board_Hash hash;
-    MoveGenerator move_gen;
-    uint32_t size;
+    MoveGenerator<BOARD_SIZE> move_gen;
 
     Cost current_cost = 0;
 
@@ -66,12 +62,12 @@ class Board {
      */
     Cost calculate_cost() {
         Cost cost = 0;
-        for (uint32_t row = 1; row < size; ++row) {
-            for (uint32_t file = 1; file < size; ++file) {
+        for (uint32_t row = 1; row < BOARD_SIZE; ++row) {
+            for (uint32_t file = 1; file < BOARD_SIZE; ++file) {
                 Square square{row, file};
                 Piece piece = position.get_piece(square);
                 if (piece > NON) {
-                    if (file == size - 1) {
+                    if (file == BOARD_SIZE - 1) {
                         ++cost;
                     } else {
                         cost += 10; // avoid nonsense solutions and make sure clauses get cleared and only the output may be left 0
@@ -86,7 +82,7 @@ class Board {
         Cost cost = 0;
         if (move.origin.square.row > 0 && move.origin.square.file > 0) {
             cost = -1;
-            if (move.origin.square.file != size - 1) {
+            if (move.origin.square.file != BOARD_SIZE - 1) {
                 cost = -10;
             }
         }
@@ -94,11 +90,11 @@ class Board {
     }
 
 public:
-    Board(Position& pos, uint32_t size) : position(pos), translation(size), move_gen(position), size(size) {
+    Board(Position<BOARD_SIZE>& pos) : position(pos), translation(BOARD_SIZE), move_gen(position) {
         assert(position.squares.size() == size);
 
-        for (uint32_t row = 0; row < size; ++row) {
-            for (uint32_t file = 0; file < size; ++file) {
+        for (uint32_t row = 0; row < BOARD_SIZE; ++row) {
+            for (uint32_t file = 0; file < BOARD_SIZE; ++file) {
                 Square square{row, file};
                 Piece piece = position.get_piece(square);
                 if (piece != NON) {
@@ -142,8 +138,8 @@ public:
     }
 
     void print() {
-        for (uint32_t row = 0; row < size; ++row) {
-            for (uint32_t file = 0; file < size; ++file) {
+        for (uint32_t row = 0; row < BOARD_SIZE; ++row) {
+            for (uint32_t file = 0; file < BOARD_SIZE; ++file) {
                 Square square{row, file};
                 Piece piece = position.get_piece(square);
                 if (piece > NON) {

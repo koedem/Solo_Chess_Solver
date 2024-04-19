@@ -3,7 +3,8 @@
 #include "DFS.h"
 #include "Positions.h"
 
-void solve(const Board& board) {
+template<uint32_t BOARD_SIZE>
+void solve(const Board<BOARD_SIZE>& board) {
     auto moves = board.generate_moves();
     for (auto move : moves) {
         move.print();
@@ -15,7 +16,6 @@ void solve(const Board& board) {
 }
 
 int main() {
-    int size = 12;
     std::vector<std::vector<Piece >> example = {
             {	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NIL, 	NON, 	NIL 	},
             {	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON 	},
@@ -31,11 +31,11 @@ int main() {
             {	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON 	}
     };
 
-    Position position(example);
-    Board board(position, size), board2(full_and_12, 12);
+    Position<12> position(example);
+    Board board(position), board2(full_and);
     board2.print();
     board.print();
 
-    solve(board);
+    solve<12>(board);
     return 0;
 }

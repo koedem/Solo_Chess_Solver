@@ -5,8 +5,9 @@
 #include "Board.h"
 #include "Hashtable.h"
 
+template<uint32_t BOARD_SIZE>
 class DFS {
-    Board board;
+    Board<BOARD_SIZE> board;
     Hashtable expanded_positions;
     uint32_t counter = 0;
     std::vector<Move> pv;
@@ -64,5 +65,5 @@ public:
         std::cout << counter << std::endl;
     }
 
-    explicit DFS(Board board) : board(std::move(board)), pv(100) {};
+    explicit DFS(Board<BOARD_SIZE> board) : board(std::move(board)), pv(100) {};
 };

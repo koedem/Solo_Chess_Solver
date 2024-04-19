@@ -4,9 +4,9 @@
 #include <cstdint>
 #include "Utils.h"
 
+template<uint32_t BOARD_SIZE>
 class MoveGenerator {
-    const Position& position;
-    const uint32_t size = position.squares.size();
+    const Position<BOARD_SIZE>& position;
 
     void generate_moves(std::vector<Move>& moves, Square square) const {
         Placed_Piece us{square, position.get_piece(square)};
@@ -24,7 +24,7 @@ class MoveGenerator {
         }
 
         row = square.row + 1;
-        while (row < size) {
+        while (row < BOARD_SIZE) {
             Square adjacent{row, square.file};
             Piece adjacent_piece = position.get_piece(adjacent);
 
@@ -51,7 +51,7 @@ class MoveGenerator {
         }
 
         file = square.file + 1;
-        while (file < size) {
+        while (file < BOARD_SIZE) {
             Square adjacent{square.row, file};
             Piece adjacent_piece = position.get_piece(adjacent);
 
@@ -68,8 +68,8 @@ public:
 
     [[nodiscard]] std::vector<Move> generate_moves() const {
         std::vector<Move> moves;
-        for (uint32_t row = 0; row < position.squares.size(); ++row) {
-            for (uint32_t file = 0; file < position.squares.size(); ++file) {
+        for (uint32_t row = 0; row < BOARD_SIZE; ++row) {
+            for (uint32_t file = 0; file < BOARD_SIZE; ++file) {
                 Square square = {row, file};
                 Piece piece = position.get_piece(square);
 
@@ -81,5 +81,5 @@ public:
         return moves;
     }
 
-    explicit MoveGenerator(const Position& position) : position(position) {};
+    explicit MoveGenerator(const Position<BOARD_SIZE>& position) : position(position) {};
 };
