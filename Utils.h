@@ -38,7 +38,7 @@ struct Move {
 template<uint32_t BOARD_SIZE>
 class Position {
 
-    std::vector<Piece> squares;
+    std::array<Piece, BOARD_SIZE * BOARD_SIZE> squares;
 
 public:
     [[nodiscard]] Piece get_piece(Square square) const {
@@ -49,11 +49,10 @@ public:
         squares[square_to_number<BOARD_SIZE>(square)] = piece;
     }
 
-    explicit Position(std::vector<std::vector<Piece>> configuration) :
-            squares(BOARD_SIZE * BOARD_SIZE) {
-        for (uint32_t i = 0; i < configuration.size(); ++i) {
-            for (uint32_t j = 0; j < configuration.size(); ++j) {
-                squares[square_to_number<BOARD_SIZE>({i, j})] = configuration[i][j];
+    explicit Position(std::vector<std::vector<Piece>> configuration) {
+        for (uint32_t row = 0; row < BOARD_SIZE; ++row) {
+            for (uint32_t file = 0; file < BOARD_SIZE; ++file) {
+                squares[square_to_number<BOARD_SIZE>({row, file})] = configuration[row][file];
             }
         }
     };
