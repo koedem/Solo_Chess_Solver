@@ -6,7 +6,7 @@
 
 using higher_bits = uint32_t;
 
-template<uint64_t TABLE_SIZE = 280476641> // large prime number  403713413
+template<uint64_t TABLE_SIZE = 486347359> // large prime number
 class Hashset {
     struct alignas(32) Bucket {
         higher_bits entries[8];

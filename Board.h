@@ -8,24 +8,6 @@
 #include "Utils.h"
 #include "MoveGenerator.h"
 
-template<uint32_t BOARD_SIZE>
-class Translation {
-    std::vector<uint32_t > square_to_index;
-    uint32_t number_of_indices = 0;
-
-public:
-    uint32_t get_index(Square square) {
-        return square_to_index[square_to_number<BOARD_SIZE>(square)];
-    }
-
-    uint32_t append_index(Square square) {
-        square_to_index[square_to_number<BOARD_SIZE>(square)] = number_of_indices;
-        return number_of_indices++;
-    }
-
-    explicit Translation(uint32_t size) : square_to_index(size * size) {};
-};
-
 struct Board_Hash {
     Hash_Type hash = 0;
 
