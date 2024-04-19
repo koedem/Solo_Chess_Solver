@@ -4,11 +4,12 @@
 #include <utility>
 #include "Board.h"
 #include "Hashtable.h"
+#include "Hashset.h"
 
 template<uint32_t BOARD_SIZE>
 class DFS {
     Board<BOARD_SIZE> board;
-    Hashtable expanded_positions;
+    Hashset<> expanded_positions;
     uint32_t counter = 0;
     std::vector<Move> pv;
 

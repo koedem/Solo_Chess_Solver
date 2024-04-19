@@ -17,7 +17,8 @@ add_executable(Solo_Chess_Solver main.cpp
         Utils.h
         DFS.h
         Positions.h
-        Hashtable.h)
+        Hashtable.h
+        Hashset.h)
 
 # Declare dependency on the absl::strings library
 target_link_libraries(Solo_Chess_Solver absl::flat_hash_map)

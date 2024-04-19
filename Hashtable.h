@@ -2,26 +2,27 @@
 
 #include <cstdint>
 
-struct TT_Entry {
-    uint32_t lower_bits;
-    uint16_t higher_bits;
-    int16_t value;
-};
 
-struct alignas(64) Bucket {
-    TT_Entry entries[8];
-};
-
+template<uint64_t TABLE_SIZE = 280476641> // large prime number  403713413;
 class Hashtable {
-    uint64_t table_size = 280476641; // large prime number  403713413;
+    struct TT_Entry {
+        uint32_t lower_bits;
+        uint16_t higher_bits;
+        int16_t value;
+    };
+
+    struct alignas(64) Bucket {
+        TT_Entry entries[8];
+    };
+
     std::vector<Bucket> table;
 
 public:
-    Hashtable() : table(table_size) {};
+    Hashtable() : table(TABLE_SIZE) {};
 
     void put(uint64_t index, int16_t value) {
-        uint64_t tt_index = index % table_size;
-        uint64_t tt_remainder = index / table_size + 1; // to ensure that 0 is unique for empty entries
+        uint64_t tt_index = index % TABLE_SIZE;
+        uint64_t tt_remainder = index / TABLE_SIZE + 1; // to ensure that 0 is unique for empty entries
 
         auto& bucket = table[tt_index];
         for (auto & entry : bucket.entries) {
@@ -35,8 +36,8 @@ public:
     }
 
     int16_t get(uint64_t index) {
-        uint64_t tt_index = index % table_size;
-        uint64_t tt_remainder = index / table_size + 1; // to ensure that 0 is unique for empty entries
+        uint64_t tt_index = index % TABLE_SIZE;
+        uint64_t tt_remainder = index / TABLE_SIZE + 1; // to ensure that 0 is unique for empty entries
 
         auto& bucket = table[tt_index];
         for (auto & entry : bucket.entries) {
