@@ -11,7 +11,7 @@ class DFS {
     Board<BOARD_SIZE> board;
     Hashset<> expanded_positions;
     uint32_t counter = 0;
-    std::vector<Move> pv;
+    std::vector<Move<BOARD_SIZE>> pv;
 
     Cost best_cost = 1000;
 
@@ -44,7 +44,7 @@ class DFS {
             }
 
             board.unmake_move(move);
-            pv[depth] = Move();
+            pv[depth] = Move<BOARD_SIZE>();
         }
 
         return value;

@@ -46,7 +46,7 @@ class Board {
         Cost cost = 0;
         for (uint32_t row = 1; row < BOARD_SIZE; ++row) {
             for (uint32_t file = 1; file < BOARD_SIZE; ++file) {
-                Square square{row, file};
+                Square square = square_from_row_file<BOARD_SIZE>(row, file);
                 Piece piece = position.get_piece(square);
                 if (piece > NON) {
                     if (file == BOARD_SIZE - 1) {
@@ -60,11 +60,11 @@ class Board {
         return cost;
     }
 
-    Cost cost_change(Move& move) {
+    Cost cost_change(Move<BOARD_SIZE>& move) {
         Cost cost = 0;
-        if (move.origin.square.row > 0 && move.origin.square.file > 0) {
+        if (move.origin.row() > 0 && move.origin.file() > 0) {
             cost = -1;
-            if (move.origin.square.file != BOARD_SIZE - 1) {
+            if (move.origin.file() != BOARD_SIZE - 1) {
                 cost = -10;
             }
         }
@@ -72,12 +72,12 @@ class Board {
     }
 
 public:
-    Board(Position<BOARD_SIZE>& pos) : position(pos), translation(BOARD_SIZE), move_gen(position) {
+    explicit Board(Position<BOARD_SIZE>& pos) : position(pos), move_gen(position, translation) {
         assert(position.squares.size() == size);
 
         for (uint32_t row = 0; row < BOARD_SIZE; ++row) {
             for (uint32_t file = 0; file < BOARD_SIZE; ++file) {
-                Square square{row, file};
+                Square square = square_from_row_file<BOARD_SIZE>(row, file);
                 Piece piece = position.get_piece(square);
                 if (piece != NON) {
                     hash.add_piece(translation.append_index(square), piece);
@@ -87,7 +87,7 @@ public:
         current_cost = calculate_cost();
     };
 
-    void make_move(Move move) {
+    void make_move(Move<BOARD_SIZE> move) {
         Square origin = move.origin.square;
         position.set_square(origin, NON);
         hash.remove_piece(translation.get_index(origin));
@@ -101,7 +101,7 @@ public:
         current_cost += cost_change(move);
     }
 
-    void unmake_move(Move move) {
+    void unmake_move(Move<BOARD_SIZE> move) {
         Square origin = move.origin.square;
         Piece original = move.origin.piece; // Reinstate the original capture count
         position.set_square(origin, original);
@@ -122,7 +122,7 @@ public:
     void print() {
         for (uint32_t row = 0; row < BOARD_SIZE; ++row) {
             for (uint32_t file = 0; file < BOARD_SIZE; ++file) {
-                Square square{row, file};
+                Square square = square_from_row_file<BOARD_SIZE>(row, file);
                 Piece piece = position.get_piece(square);
                 if (piece > NON) {
                     std::cout << piece - 1;
