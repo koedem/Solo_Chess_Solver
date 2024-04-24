@@ -63,12 +63,7 @@ public:
         squares[square] = piece;
     }
 
-    explicit Position(std::vector<std::vector<Piece>> configuration) {
-        for (uint32_t row = 0; row < BOARD_SIZE; ++row) {
-            for (uint32_t file = 0; file < BOARD_SIZE; ++file) {
-                squares[square_from_row_file<BOARD_SIZE>(row, file)] = configuration[row][file];
-            }
-        }
+    explicit Position(std::array<Piece, BOARD_SIZE * BOARD_SIZE> configuration) : squares(configuration) {
     };
 };
 

@@ -6,6 +6,7 @@ add_compile_options(-ggdb -g3)
 add_compile_definitions("NDEBUG")
 
 set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
+# -fno-inline-functions
 #set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -ggdb -g3 -flto -march=native")
 
 # Process Abseil's CMake build system

@@ -73,15 +73,10 @@ class Board {
 
 public:
     explicit Board(Position<BOARD_SIZE>& pos) : position(pos), move_gen(position, translation) {
-        assert(position.squares.size() == size);
-
-        for (uint32_t row = 0; row < BOARD_SIZE; ++row) {
-            for (uint32_t file = 0; file < BOARD_SIZE; ++file) {
-                Square square = square_from_row_file<BOARD_SIZE>(row, file);
-                Piece piece = position.get_piece(square);
-                if (piece != NON) {
-                    hash.add_piece(translation.append_index(square), piece);
-                }
+        for (Square square = 0; square < BOARD_SIZE * BOARD_SIZE; ++square) {
+            Piece piece = position.get_piece(square);
+            if (piece != NON) {
+                hash.add_piece(translation.append_index(square), piece);
             }
         }
         current_cost = calculate_cost();
