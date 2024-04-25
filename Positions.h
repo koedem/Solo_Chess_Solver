@@ -90,3 +90,66 @@ std::array improved_and_vec = {
         	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON
 };
 Position<12> improved_and(improved_and_vec);
+
+std::array big_or_vec = {
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NIL,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NIL,
+        NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	TWO, 	NON, 	NON, 	NON, 	TWO, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	TWO, 	NON, 	NON, 	TWO, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON,
+        TWO, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON
+};
+Position<12> big_or(big_or_vec);
+
+std::array small_or_vec = {
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NIL,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	TWO, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NIL,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	TWO, 	NON, 	TWO, 	TWO, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON,
+        TWO, 	NON, 	NON, 	NON, 	TWO, 	NON, 	TWO, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON
+};
+Position<9> small_or(small_or_vec);
+
+std::array full_or_clause_vec = {
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NIL,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NIL,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	TWO, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	TWO, 	TWO, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON,
+        NON, 	NON, 	TWO, 	NON, 	TWO, 	TWO, 	NON,    NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON,    NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        TWO, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON,
+        TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	TWO, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON
+};
+Position<12> full_or_clause(full_or_clause_vec);
+
+std::array and_or_clause_vec = {
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NIL, 	NON, 	NON, 	NON, 	NIL,
+        NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NIL,
+        NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	TWO, 	TWO, 	NON, 	NON, 	NON, 	TWO, 	TWO, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	TWO, 	NON, 	TWO, 	TWO, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON,
+        NON, 	TWO, 	NON, 	NON, 	NON, 	TWO, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	TWO, 	NON, 	NON, 	TWO, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NIL, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	NON, 	TWO, 	NON, 	NON, 	NON, 	NON, 	NON,
+        NIL, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	TWO, 	NON, 	TWO,
+        NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON, 	NON
+};
+Position<14> and_or_clause(and_or_clause_vec);
