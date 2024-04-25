@@ -3,16 +3,13 @@
 #include <cstdint>
 
 
-template<uint64_t TABLE_SIZE = 280476641> // large prime number  403713413;
+template<uint64_t TABLE_SIZE = 735733753> //280476641> // large prime number  403713413;
 class Hashtable {
-    struct TT_Entry {
-        uint32_t lower_bits;
-        uint16_t higher_bits;
-        int16_t value;
-    };
-
-    struct alignas(64) Bucket {
-        TT_Entry entries[8];
+    struct alignas(32) Bucket {
+        uint32_t hashes[6] = {};
+        uint8_t infos[6] = {};
+        uint8_t present_entries = 0;
+        uint8_t lru_flags = 0;
     };
 
     std::vector<Bucket> table;
@@ -20,32 +17,38 @@ class Hashtable {
 public:
     Hashtable() : table(TABLE_SIZE) {};
 
-    void put(uint64_t index, int16_t value) {
+    void put(uint64_t index, int32_t depth, uint64_t node_cost) {
+        if (depth >= tt_depth_threshold && node_cost <= tt_node_threshold) {
+            return;
+        }
         uint64_t tt_index = index % TABLE_SIZE;
-        uint64_t tt_remainder = index / TABLE_SIZE + 1; // to ensure that 0 is unique for empty entries
+        uint64_t tt_remainder = index / TABLE_SIZE;
+        uint8_t info = node_cost; // TODO use log or something
 
         auto& bucket = table[tt_index];
-        for (auto & entry : bucket.entries) {
-            if (entry.higher_bits == 0 && entry.lower_bits == 0) {
-                entry.value = value;
-                entry.lower_bits = tt_remainder & 0xFFFFFFFF;
-                entry.higher_bits = (tt_remainder >> 32);
-                return;
-            }
+        if (bucket.present_entries < 6) {
+            bucket.hashes[bucket.present_entries] = tt_remainder;
+            bucket.infos[bucket.present_entries] = info;
+            ++bucket.present_entries;
+        } else {
+            // replace lowest cost value
         }
     }
 
-    int16_t get(uint64_t index) {
+    bool get(uint64_t index, uint32_t depth) {
+        if (depth >= tt_depth_threshold) {
+            return false;
+        }
         uint64_t tt_index = index % TABLE_SIZE;
-        uint64_t tt_remainder = index / TABLE_SIZE + 1; // to ensure that 0 is unique for empty entries
+        uint64_t tt_remainder = index / TABLE_SIZE;
 
         auto& bucket = table[tt_index];
-        for (auto & entry : bucket.entries) {
-            uint64_t bits = ((uint64_t) entry.higher_bits << 32) + entry.lower_bits;
-            if (bits == tt_remainder) {
-                return entry.value;
+        for (int i = 0; i < bucket.present_entries; ++i) {
+            if (bucket.hashes[i] == tt_remainder) {
+                // TODO maybe do LRU bit stuff later
+                return true;
             }
         }
-        return -1;
+        return false;
     }
 };

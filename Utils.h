@@ -8,6 +8,8 @@ using Cost = int16_t;
 
 constexpr Piece NON = 0, NIL = 1, ONE = 2, TWO = 3; // Offset by one so that 0 corresponds to an empty square
 
+static constexpr uint32_t tt_depth_threshold = 17, tt_node_threshold = 100;
+
 using Square = uint32_t;
 
 template<uint32_t BOARD_SIZE>

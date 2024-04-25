@@ -6,8 +6,6 @@
 
 using higher_bits = uint32_t;
 
-static constexpr uint32_t depth_threshold = 17, node_threshold = 100;
-
 template<uint64_t TABLE_SIZE = 735733753> //486347359> //26710193> // large prime number
 class Hashset {
     struct alignas(32) Bucket {
@@ -20,41 +18,37 @@ class Hashset {
 public:
     Hashset() : table(TABLE_SIZE) {};
 
-    void put(uint64_t index, int16_t value, uint32_t depth, uint64_t node_cost) {
-        if (depth < depth_threshold && node_cost > node_threshold) {
-            uint64_t tt_index = index % TABLE_SIZE;
-            uint64_t tt_remainder = index / TABLE_SIZE + 1; // to ensure that 0 is unique for empty entries
+    void put(uint64_t index, uint32_t depth, uint64_t node_cost) {
+        if (depth >= tt_depth_threshold && node_cost <= tt_node_threshold) {
+            return;
+        }
+        uint64_t tt_index = index % TABLE_SIZE;
+        uint64_t tt_remainder = index / TABLE_SIZE + 1; // to ensure that 0 is unique for empty entries
 
-            auto &bucket = table[tt_index];
-            for (auto &entry: bucket.entries) {
-                if (entry == 0) {
-                    entry = tt_remainder;
-                    ++fill;
-                    return;
-                }
+        auto &bucket = table[tt_index];
+        for (auto &entry: bucket.entries) {
+            if (entry == 0) {
+                entry = tt_remainder;
+                ++fill;
+                return;
             }
         }
     }
 
-    /**
-     *
-     * @param index
-     * @return -1 if entry not found, 100 if found. This is effectively a hack and should be a bool function, however,
-     * for compatibility reasons it is this way.
-     */
-    int16_t get(uint64_t index, uint32_t depth) {
-        if (depth < depth_threshold) {
-            uint64_t tt_index = index % TABLE_SIZE;
-            uint64_t tt_remainder = index / TABLE_SIZE + 1; // to ensure that 0 is unique for empty entries
+    bool get(uint64_t index, uint32_t depth) {
+        if (depth >= tt_depth_threshold) {
+            return false;
+        }
+        uint64_t tt_index = index % TABLE_SIZE;
+        uint64_t tt_remainder = index / TABLE_SIZE + 1; // to ensure that 0 is unique for empty entries
 
-            auto &bucket = table[tt_index];
-            for (auto &entry: bucket.entries) {
-                if (entry == tt_remainder) {
-                    return 100;
-                }
+        auto &bucket = table[tt_index];
+        for (auto &entry: bucket.entries) {
+            if (entry == tt_remainder) {
+                return true;
             }
         }
-        return -1;
+        return false;
     }
 
     uint32_t get_fill_permil() {

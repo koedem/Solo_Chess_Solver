@@ -29,13 +29,13 @@ class DFS {
 
             Cost inner_value;
             auto hash = board.get_hash();
-            int16_t cost = expanded_positions.get(hash, depth);
-            if (cost == -1) { // not expanded yet
+            bool present = expanded_positions.get(hash, depth);
+            if (!present) { // not expanded yet
                 auto old_counter = counter;
                 inner_value = dfs(depth + 1);
-                expanded_positions.put(hash, inner_value, depth, counter - old_counter);
+                expanded_positions.put(hash, depth, counter - old_counter);
             } else {
-                inner_value = cost;
+                inner_value = value; // TODO this whole function can be a void function, we don't need to track value at all
             }
 
             if (inner_value < value) { // If we can reduce the value by this move, update the value
