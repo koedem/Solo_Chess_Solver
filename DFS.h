@@ -10,7 +10,7 @@ template<uint32_t BOARD_SIZE>
 class DFS {
     Board<BOARD_SIZE> board;
     Hashset<> expanded_positions;
-    uint32_t counter = 0;
+    uint64_t counter = 0;
     std::vector<Move<BOARD_SIZE>> pv;
 
     Cost best_cost = 1000;
@@ -20,15 +20,20 @@ class DFS {
         auto moves = board.generate_moves();
         for (auto move : moves) {
             ++counter;
+            if ((counter & 0xFFFFFFF) == 0) {
+                print_compact_pv();
+            }
+
             board.make_move(move);
             pv[depth] = move;
 
             Cost inner_value;
             auto hash = board.get_hash();
-            int16_t cost = expanded_positions.get(hash);
+            int16_t cost = expanded_positions.get(hash, depth);
             if (cost == -1) { // not expanded yet
+                auto old_counter = counter;
                 inner_value = dfs(depth + 1);
-                expanded_positions.put(hash, inner_value);
+                expanded_positions.put(hash, inner_value, depth, counter - old_counter);
             } else {
                 inner_value = cost;
             }
@@ -58,6 +63,17 @@ class DFS {
             pv[i].print();
             std::cout << std::endl;
         }
+    }
+
+    void print_compact_pv() {
+        for (int i = 0; i < 8; i++) {
+            if (pv[i].destination.square == pv[i].origin.square) { // Not a real move
+                break;
+            }
+            pv[i].print();
+            std::cout << ",\t";
+        }
+        std::cout << expanded_positions.get_fill_permil() << std::endl;
     }
 
 public:
