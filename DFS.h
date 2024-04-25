@@ -9,14 +9,20 @@
 template<uint32_t BOARD_SIZE>
 class DFS {
     Board<BOARD_SIZE> board;
-    Hashset<> expanded_positions;
+    Hashtable<> expanded_positions;
     uint64_t counter = 0;
     std::vector<Move<BOARD_SIZE>> pv;
 
-    Cost best_cost = 1000;
+    Cost best_cost = 50;
 
-    Cost dfs(int depth) {
-        Cost value = board.cost();
+    void dfs(int depth) {
+        if (board.cost() < best_cost) {
+            best_cost = board.cost();
+            std::cout << best_cost << std::endl;
+            board.print();
+            print_pv();
+        }
+
         auto moves = board.generate_moves();
         for (auto move : moves) {
             ++counter;
@@ -27,32 +33,17 @@ class DFS {
             board.make_move(move);
             pv[depth] = move;
 
-            Cost inner_value;
             auto hash = board.get_hash();
             bool present = expanded_positions.get(hash, depth);
             if (!present) { // not expanded yet
                 auto old_counter = counter;
-                inner_value = dfs(depth + 1);
+                dfs(depth + 1);
                 expanded_positions.put(hash, depth, counter - old_counter);
-            } else {
-                inner_value = value; // TODO this whole function can be a void function, we don't need to track value at all
-            }
-
-            if (inner_value < value) { // If we can reduce the value by this move, update the value
-                value = inner_value;
-                if (value < best_cost) {
-                    best_cost = value;
-                    std::cout << best_cost << std::endl;
-                    board.print();
-                    print_pv();
-                }
             }
 
             board.unmake_move(move);
             pv[depth] = Move<BOARD_SIZE>();
         }
-
-        return value;
     }
 
     void print_pv() {
