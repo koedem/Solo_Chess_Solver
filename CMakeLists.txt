@@ -9,9 +9,6 @@ set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
 # -fno-inline-functions
 #set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -ggdb -g3 -flto -march=native")
 
-# Process Abseil's CMake build system
-add_subdirectory(abseil-cpp)
-
 add_executable(Solo_Chess_Solver main.cpp
         Board.h
         MoveGenerator.h
@@ -20,6 +17,3 @@ add_executable(Solo_Chess_Solver main.cpp
         Positions.h
         Hashtable.h
         Hashset.h)
-
-# Declare dependency on the absl::strings library
-target_link_libraries(Solo_Chess_Solver absl::flat_hash_map)
